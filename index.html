@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio de Repaso - FICDE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ficde-azul-dark: #134252;
+            --ficde-azul-light: #2c5c6e;
+            --ficde-naranja: #e68161;
+            --ficde-naranja-hover: #ff9f85;
+            --tarjeta-bg: #f0f4f5;
+            --input-bg: #e2e8eb;
+            --texto-principal: #0f2d38;
+            --texto-secundario: #4a636e;
+            --verde-exito: #2e7d32;
+            --verde-bg: #c8e6c9;
+            --rojo-error: #c62828;
+            --naranja-bg: #ffe0b2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ficde-azul-dark) 0%, #0a252e 100%);
+            min-height: 100vh;
+            color: var(--texto-principal);
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-img { height: 50px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        .module-tag {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-card {
+            background: var(--tarjeta-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-bottom: 6px solid var(--ficde-naranja);
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            color: var(--ficde-azul-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .fede-avatar-large {
+            width: 140px; height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            padding: 5px;
+            box-shadow: 0 10px 25px rgba(230, 129, 97, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .fede-avatar-large:hover { transform: scale(1.1); }
+
+        .fede-avatar-large img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .block-card {
+            background: var(--tarjeta-bg);
+            padding: 30px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .block-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--ficde-naranja);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .block-icon {
+            font-size: 3rem; margin-bottom: 15px;
+            background: rgba(19, 66, 82, 0.1);
+            width: 70px; height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: var(--ficde-azul-dark);
+        }
+
+        .block-title { color: var(--ficde-azul-dark); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+
+        .block-desc { color: var(--texto-secundario); font-size: 0.9rem; line-height: 1.5; }
+
+        .activity-screen {
+            display: none;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .activity-screen.active { display: grid; }
+
+        .tutor-sidebar {
+            background: var(--ficde-azul-light);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            position: sticky; top: 20px;
+        }
+
+        .tutor-bubble {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--ficde-azul-dark);
+            margin-top: 20px;
+            position: relative;
+            text-align: left;
+        }
+
+        .tutor-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            border-width: 0 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent rgba(255,255,255,0.95);
+            transform: translateX(-50%);
+        }
+
+        .activity-content {
+            background: var(--tarjeta-bg);
+            padding: 40px;
+            border-radius: 16px;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .act-badge {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .act-title { font-size: 1.8rem; color: var(--ficde-azul-dark); margin: 15px 0; font-weight: 800; }
+
+        .act-instruction { font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 30px; }
+
+        .student-input {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--ficde-azul-dark);
+            transition: all 0.3s;
+        }
+
+        .student-input:focus { background: white; border-color: var(--ficde-naranja); outline: none; }
+
+        .fill-input {
+            border: none;
+            border-bottom: 2px solid var(--ficde-naranja);
+            background: transparent;
+            font-weight: 700;
+            color: var(--ficde-azul-dark);
+            text-align: center;
+            width: 150px;
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 18px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--ficde-naranja), #ff9f85);
+            color: white;
+            box-shadow: 0 6px 20px rgba(230, 129, 97, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover { transform: translateY(-3px); }
+
+        .btn-back {
+            background: transparent;
+            color: var(--texto-secundario);
+            box-shadow: none;
+            border: 2px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover { background: #e0e0e0; color: var(--ficde-azul-dark); }
+
+        .traffic-row, .checklist-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .traffic-row:hover, .checklist-item:hover { border-color: var(--ficde-naranja); transform: translateX(5px); }
+
+        .traffic-btn {
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 2px solid #ddd;
+            cursor: pointer;
+            opacity: 0.3;
+        }
+
+        .traffic-btn.active { opacity: 1; transform: scale(1.2); border-color: var(--ficde-azul-dark); }
+
+        .bg-green { background: #4CAF50; }
+
+        .bg-yellow { background: #FFC107; }
+
+        .bg-red { background: #f44336; }
+
+        .check-box {
+            width: 24px; height: 24px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .checklist-item.selected { border-color: var(--ficde-naranja); background: #fff5f0; }
+
+        .checklist-item.selected .check-box { background: var(--ficde-naranja); border-color: var(--ficde-naranja); color: white; }
+
+        .feedback-area {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            animation: slideUp 0.4s;
+        }
+
+        .feedback-success { background: var(--verde-bg); color: #1b5e20; border-left: 6px solid var(--verde-exito); }
+
+        .feedback-retry { background: var(--naranja-bg); color: #bf360c; border-left: 6px solid #ef6c00; }
+
+        .feedback-fail { background: #cfd8dc; color: #37474f; border-left: 6px solid #455a64; }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .activity-screen { grid-template-columns: 1fr; }
+            .tutor-sidebar { display: flex; align-items: center; gap: 20px; }
+            .fede-avatar-large { width: 80px; height: 80px; }
+            .tutor-bubble::after { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- AUDIOS MP3 - Todos en la misma carpeta -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="chill-study-desk-focus-concentration-lofi-451180.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="saludoInicial" preload="auto" src="saludoinicial.mp3"></audio>
+    <audio id="mensaje1Ejercicios" preload="auto" src="mensaje1ejercicios.mp3"></audio>
+    <audio id="mensaje2Ejercicios" preload="auto" src="mensaje2ejercicios.mp3"></audio>
+    <audio id="mensaje3Ejercicios" preload="auto" src="mensaje3ejercicios.mp3"></audio>
+    <audio id="mensaje4Ejercicios" preload="auto" src="mensaje4ejercicios.mp3"></audio>
+    <audio id="respuestaCorrecta" preload="auto" src="respuestacorrecta.mp3"></audio>
+    <audio id="primerError" preload="auto" src="primererror.mp3"></audio>
+    <audio id="segundoError" preload="auto" src="segundoerror.mp3"></audio>
+    <audio id="loLograste" preload="auto" src="lolograste.mp3"></audio>
+
+    <audio id="hoverSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.m4a"></audio>
+    <audio id="clickSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.m4a"></audio>
+    <audio id="successSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.m4a"></audio>
+
+    <button id="musicToggle" onclick="toggleMusic()">🔇</button>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="FICDE" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block'">
+                <h2 id="altLogo" style="display:none; color:white; font-weight:800;">FICDE</h2>
+            </div>
+            <div class="module-tag">Módulo Solicitudes Tipo</div>
+        </header>
+
+        <div id="selectionScreen">
+            <div class="welcome-card">
+                <div class="fede-avatar-large" onclick="playAudio('saludoInicial')">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <h1 class="welcome-title">Espacio de Repaso Interactivo</h1>
+                <p style="color: var(--texto-secundario); font-size: 1.1rem;">Donde el conocimiento se convierte en acción</p>
+            </div>
+
+            <div class="blocks-grid">
+                <div class="block-card" onclick="startModule('sintesis')">
+                    <div class="block-icon">🧠</div>
+                    <div class="block-title">Síntesis</div>
+                    <div class="block-desc">Este bloque aborda los conceptos fundamentales de las Solicitudes Tipo, su función registral, reglas de uso y validez dentro del trámite automotor.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('analisis')">
+                    <div class="block-icon">🔍</div>
+                    <div class="block-title">Análisis Crítico</div>
+                    <div class="block-desc">Este bloque analiza la aplicación normativa de las Solicitudes Tipo, evaluando validez, correcciones, plazos y consecuencias operativas.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('escenarios')">
+                    <div class="block-icon">🎬</div>
+                    <div class="block-title">Escenarios</div>
+                    <div class="block-desc">Este bloque presenta situaciones prácticas vinculadas al uso de Solicitudes Tipo y analiza conductas correctas e incorrectas en contextos reales de trámite.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('practica')">
+                    <div class="block-icon">⚡</div>
+                    <div class="block-title">Práctica</div>
+                    <div class="block-desc">Este bloque propone ejercicios operativos para aplicar correctamente las Solicitudes Tipo en situaciones habituales del trámite registral.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activityScreen" class="activity-screen">
+            <div class="tutor-sidebar">
+                <div class="fede-avatar-large" style="width: 100px; height: 100px; border-color: var(--ficde-naranja);" onclick="replayTutorMessage()">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <div style="flex:1;">
+                    <h3 style="color:var(--ficde-naranja); margin-bottom:5px;">Tutor Fede</h3>
+                    <div class="tutor-bubble" id="tutorMessage"></div>
+                </div>
+            </div>
+
+            <div class="activity-content" id="activityContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GESTIÓN DE AUDIO MP3 =====
+        const audioFiles = {
+            saludoInicial: document.getElementById('saludoInicial'),
+            mensaje1: document.getElementById('mensaje1Ejercicios'),
+            mensaje2: document.getElementById('mensaje2Ejercicios'),
+            mensaje3: document.getElementById('mensaje3Ejercicios'),
+            mensaje4: document.getElementById('mensaje4Ejercicios'),
+            correcto: document.getElementById('respuestaCorrecta'),
+            error1: document.getElementById('primerError'),
+            error2: document.getElementById('segundoError'),
+            lolograste: document.getElementById('loLograste')
+        };
+
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                audioFiles[audioKey].currentTime = 0;
+                audioFiles[audioKey].play().catch(err => console.log('Error al reproducir audio:', err));
+            }
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSoundEl = document.getElementById('clickSound');
+        const successSoundEl = document.getElementById('successSound');
+        const hoverSoundEl = document.getElementById('hoverSound');
+
+        let musicOn = false;
+        let audioUnlocked = false;
+
+        function unlockAudio() {
+            if (audioUnlocked) return;
+            [clickSoundEl, successSoundEl, hoverSoundEl].forEach(a => {
+                a.volume = 0;
+                const p = a.play();
+                if (p) p.then(() => { a.pause(); a.currentTime = 0; a.volume = 1; }).catch(()=>{});
+            });
+            audioUnlocked = true;
+        }
+
+        document.addEventListener('pointerdown', unlockAudio, { once: true });
+        document.addEventListener('keydown', unlockAudio, { once: true });
+
+        function toggleMusic() {
+            unlockAudio();
+            if (!musicOn) {
+                bgMusic.volume = 0.1;
+                bgMusic.play().catch(() => {});
+                document.getElementById('musicToggle').innerText = '🎵';
+            } else {
+                bgMusic.pause();
+                document.getElementById('musicToggle').innerText = '🔇';
+            }
+            musicOn = !musicOn;
+        }
+
+        function playSound(type) {
+            if (!audioUnlocked) return;
+            try {
+                if (type === 'click') { clickSoundEl.currentTime=0; clickSoundEl.volume=0.8; clickSoundEl.play().catch(()=>{}); }
+                if (type === 'success') { successSoundEl.currentTime=0; successSoundEl.volume=0.8; successSoundEl.play().catch(()=>{}); }
+                if (type === 'hover') { hoverSoundEl.currentTime=0; hoverSoundEl.volume=0.2; hoverSoundEl.play().catch(()=>{}); }
+            } catch (e) {}
+        }
+
+        function wireUiSounds() {
+            document.querySelectorAll('.block-card, .btn-action, .checklist-item, .traffic-row, .fede-avatar-large').forEach(el => {
+                if (el.dataset.sound === '1') return;
+                el.dataset.sound = '1';
+                el.addEventListener('mouseenter', () => playSound('hover'));
+                el.addEventListener('click', () => playSound('click'));
+            });
+        }
+
+        window.addEventListener('load', wireUiSounds);
+
+        // ===== NORMALIZACIÓN DE TEXTO =====
+        function normalizar(txt) {
+            return txt
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
+        // ===== ACTIVIDADES: validaciones de texto simplificadas ===
+const modules = {
+
+    // ===================== SÍNTESIS =====================
+    sintesis: [
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Función en el trámite registral',
+            instruction: 'Explicá cuál es la función de las Solicitudes Tipo dentro del sistema registral del automotor.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('solicit')) c++; // solicitud
+                if (v.includes('tramit')) c++; // trámite
+                if (v.includes('registr')) c++; // registro
+                if (v.includes('instrument')) c++; // instrumento (extra)
+                if (v.includes('formal')) c++; // formal (extra)
+                if (v.includes('inscripc')) c++; // inscripción (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en cómo se inicia formalmente un trámite ante el Registro.',
+            explanation: 'Las Solicitudes Tipo son el instrumento formal mediante el cual se solicita la inscripción o modificación de datos ante el Registro del Automotor, dando inicio al trámite registral.'
+        },
+        {
+            type: 'text',
+            badge: 'Principios registrales',
+            title: 'Principio de rogación',
+            instruction: '¿En qué consiste el principio de rogación aplicado al régimen del automotor?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('rogacion')) c++; // rogación
+                if (v.includes('peticion')) c++; // petición
+                if (v.includes('actuacion')) c++; // actuación
+                if (v.includes('pedid')) c++; // pedido (extra)
+                if (v.includes('interes')) c++; // interesada (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en quién impulsa la actuación del Registro.',
+            explanation: 'El principio de rogación establece que el Registro solo actúa a pedido de la parte interesada o de la autoridad competente, mediante la presentación de una Solicitud Tipo.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Solicitudes tipo',
+            title: 'Características generales',
+            instruction: 'Marcá las características propias de las Solicitudes Tipo.',
+            items: [
+                { text: 'Documento informal sin valor legal', correct: false },
+                { text: 'Instrumento obligatorio para trámites registrales', correct: true },
+                { text: 'Puede completarse de cualquier manera', correct: false },
+                { text: 'Tiene carácter de declaración jurada', correct: true }
+            ],
+            tutor: 'Identificá qué rasgos le otorgan validez legal.',
+            explanation: 'Las Solicitudes Tipo son obligatorias y tienen valor legal porque los datos consignados constituyen una declaración jurada.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Carácter de declaración jurada',
+            instruction: '¿Qué implica que los datos consignados en una Solicitud Tipo tengan carácter de declaración jurada?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('responsabil')) c++; // responsabilidad
+                if (v.includes('veracid')) c++; // veracidad
+                if (v.includes('legal')) c++; // legal (extra)
+                if (v.includes('asum')) c++; // asume (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en las consecuencias legales de la información brindada.',
+            explanation: 'El carácter de declaración jurada implica que quien firma la solicitud asume responsabilidad legal por la veracidad de los datos consignados.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Reglas de uso',
+            title: 'Principio de unicidad',
+            instruction: 
+                'Completá la frase.<br><br>' +
+                'El principio de unicidad de la rogación establece que debe utilizarse una Solicitud Tipo por cada __________ y por cada __________.',
+            blanks: ['automotor', 'tramite'],
+            tutor: 'Pensá en cantidad de vehículos y gestiones.',
+            explanation: 'El principio de unicidad busca individualizar cada trámite y cada automotor mediante una Solicitud Tipo específica.'
+        },
+        {
+            type: 'text',
+            badge: 'Reglas de completado',
+            title: 'Forma de llenado',
+            instruction: 'Explicá cómo deben completarse correctamente las Solicitudes Tipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('imprent')) c++; // imprenta
+                if (v.includes('tint')) c++; // tinta
+                if (v.includes('maquin')) c++; // máquina (extra)
+                if (v.includes('negr')) c++; // negra (extra)
+                if (v.includes('azul')) c++; // azul (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en prolijidad y legibilidad.',
+            explanation: 'Las Solicitudes Tipo deben completarse a máquina o con letra imprenta, en tinta negra o azul, cubriendo todos los datos requeridos.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Reglas de completado',
+            title: 'Errores frecuentes',
+            instruction: 'Marcá prácticas incorrectas al completar una Solicitud Tipo.',
+            items: [
+                { text: 'Completar con letra imprenta', correct: false },
+                { text: 'Usar corrector líquido', correct: true },
+                { text: 'Tachar espacios no utilizados', correct: false },
+                { text: 'Omitir datos requeridos', correct: true }
+            ],
+            tutor: 'Pensá qué acciones afectan la validez del formulario.',
+            explanation: 'El uso de corrector y la omisión de datos afectan la validez de la Solicitud Tipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Enmiendas',
+            title: 'Correcciones permitidas',
+            instruction: '¿Cuándo es válida una enmienda en una Solicitud Tipo?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('enmiend')) c++; // enmienda
+                if (v.includes('observacion')) c++; // observaciones
+                if (v.includes('salv')) c++; // salva, salvar (extra)
+                if (v.includes('firm')) c++; // firma, firmada (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en cómo se salva un error.',
+            explanation: 'Una enmienda es válida cuando el error se salva en el rubro observaciones y es firmada por quien corresponda.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Solicitudes tipo',
+            title: 'Validez de datos',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'Los datos consignados en la Solicitud Tipo carecen de valor legal.', color: 'red' },
+                { text: 'Puede usarse una misma Solicitud Tipo para varios automotores.', color: 'red' },
+                { text: 'Las Solicitudes Tipo son obligatorias para iniciar trámites registrales.', color: 'green' }
+            ],
+            tutor: 'Evaluá qué afirmaciones coinciden con los principios registrales.',
+            explanation: 'Las Solicitudes Tipo son obligatorias, tienen valor legal y se utilizan de forma individual por trámite y automotor.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Importancia operativa',
+            instruction: 'Explicá por qué las Solicitudes Tipo son fundamentales en el sistema registral automotor.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('control')) c++; // control
+                if (v.includes('formal')) c++; // formalidad
+                if (v.includes('orden')) c++; // orden (extra)
+                if (v.includes('segurid')) c++; // seguridad (extra)
+                if (v.includes('juridic')) c++; // jurídica (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en orden y seguridad jurídica.',
+            explanation: 'Las Solicitudes Tipo permiten ordenar, controlar y formalizar los trámites, garantizando seguridad jurídica en el registro automotor.'
+        },
+    ],
+
+    // ===================== ANÁLISIS CRÍTICO =====================
+    analisis: [
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Alcance normativo',
+            instruction: 'Analizá por qué el uso de Solicitudes Tipo es obligatorio en los trámites registrales del automotor.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('obligatori')) c++; // obligatoriedad
+                if (v.includes('normativ')) c++; // normativa
+                if (v.includes('registr')) c++; // registro
+                if (v.includes('ajust')) c++; // ajusten (extra)
+                if (v.includes('vigent')) c++; // vigente (extra)
+                if (v.includes('actuar')) c++; // actuar (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en la norma que regula la actuación del Registro.',
+            explanation: 'El uso obligatorio de Solicitudes Tipo asegura que los trámites se ajusten a la normativa vigente y habilita al Registro a actuar válidamente.'
+        },
+        {
+            type: 'text',
+            badge: 'Principios registrales',
+            title: 'Consecuencias del principio de rogación',
+            instruction: '¿Qué sucede si no existe una solicitud expresa para iniciar un trámite registral?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('peticion')) c++; // petición
+                if (v.includes('actuacion')) c++; // actuación
+                if (v.includes('tramit')) c++; // trámite
+                if (v.includes('no')) c++; // no (extra, para 'no puede actuar')
+                if (v.includes('pedid')) c++; // pedido (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en la inactividad del Registro.',
+            explanation: 'Sin una solicitud expresa, el Registro no puede actuar, ya que su intervención depende exclusivamente del pedido formal del interesado o autoridad competente.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Enmiendas',
+            title: 'Impacto en la validez',
+            instruction: 'Marcá las situaciones que invalidan una Solicitud Tipo.',
+            items: [
+                { text: 'Corrección salvada en observaciones', correct: false },
+                { text: 'Enmienda total del nombre de una parte', correct: true },
+                { text: 'Uso de corrector', correct: true },
+                { text: 'Enmienda parcial legible', correct: false }
+            ],
+            tutor: 'Evaluá si el dato original puede verificarse.',
+            explanation: 'Las enmiendas que impiden identificar datos esenciales o eliminan la legibilidad invalidan la Solicitud Tipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Correcciones admisibles',
+            instruction: 'Explicá por qué algunas enmiendas están permitidas y otras no.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('identific')) c++; // identificación, identificar
+                if (v.includes('dat')) c++; // datos
+                if (v.includes('esencial')) c++; // esenciales
+                if (v.includes('original')) c++; // original (extra)
+                if (v.includes('afect')) c++; // afectan (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en la posibilidad de verificar la información original.',
+            explanation: 'Las enmiendas se permiten cuando no afectan datos esenciales y permiten identificar claramente la información original consignada.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Validez',
+            title: 'Plazo de vigencia',
+            instruction: 
+                'Completá la frase.<br><br>' +
+                'Las Solicitudes Tipo tienen una vigencia de __________ días __________ administrativos desde su firma o certificación.',
+            blanks: ['90', 'habiles'],
+            tutor: 'Pensá en el plazo establecido por la normativa.',
+            explanation: 'El plazo de vigencia limita temporalmente la eficacia de la Solicitud Tipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Validez',
+            title: 'Mora',
+            instruction: 'Explicá las consecuencias de presentar una Solicitud Tipo fuera del plazo de vigencia.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('recarg')) c++; // recargo
+                if (v.includes('vencimient')) c++; // vencimiento
+                if (v.includes('arancel')) c++; // arancel (extra)
+                if (v.includes('adicional')) c++; // adicional (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en el impacto económico del atraso.',
+            explanation: 'La presentación fuera de plazo genera un recargo adicional sobre el arancel correspondiente, conforme el tiempo de mora transcurrido.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Solicitudes tipo',
+            title: 'Gratuidad',
+            instruction: 'Marcá los requisitos necesarios para la entrega gratuita de una Solicitud Tipo.',
+            items: [
+                { text: 'Ingreso del trámite en el mismo acto', correct: true },
+                { text: 'Firma sin certificación', correct: false },
+                { text: 'Presentación como minuta', correct: false },
+                { text: 'Certificación de firma ante el encargado', correct: true }
+            ],
+            tutor: 'Identificá condiciones que deben cumplirse juntas.',
+            explanation: 'La gratuidad solo se aplica cuando se certifica la firma y se ingresa el trámite en el mismo acto.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes digitales',
+            title: 'Correcciones',
+            instruction: 'Analizá por qué las correcciones en Solicitudes Tipo digitales deben realizarse en hoja anexa.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('inalterabil')) c++; // inalterabilidad
+                if (v.includes('respald')) c++; // respaldo
+                if (v.includes('integrid')) c++; // integridad (extra)
+                if (v.includes('preserv')) c++; // preserva (extra)
+                if (v.includes('alter')) c++; // alterar (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en la integridad del formulario impreso.',
+            explanation: 'La hoja anexa preserva la integridad del formulario digital impreso y permite documentar aclaraciones sin alterar el original.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Validez',
+            title: 'Evaluación normativa',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'Una Solicitud Tipo vencida no puede generar consecuencias económicas.', color: 'red' },
+                { text: 'Las Solicitudes Tipo digitales pueden corregirse directamente sobre el formulario.', color: 'red' },
+                { text: 'La vigencia de la Solicitud Tipo limita temporalmente su eficacia.', color: 'green' }
+            ],
+            tutor: 'Revisá qué establece la normativa sobre plazos y correcciones.',
+            explanation: 'La vigencia y las reglas de corrección determinan la eficacia legal de la Solicitud Tipo.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes tipo',
+            title: 'Riesgos operativos',
+            instruction: 'Explicá qué riesgos se generan al no respetar las reglas de uso de las Solicitudes Tipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('rechaz')) c++; // rechazo
+                if (v.includes('demor')) c++; // demora
+                if (v.includes('cost')) c++; // costos (extra)
+                if (v.includes('adicional')) c++; // adicionales (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en el impacto sobre el trámite.',
+            explanation: 'El incumplimiento de las reglas puede provocar rechazos, demoras y costos adicionales en la tramitación registral.'
+        },
+    ],
+
+    // ===================== ESCENARIOS =====================
+    escenarios: [
+        {
+            type: 'text',
+            badge: 'Inicio del trámite',
+            title: 'Presentación incompleta',
+            instruction: 'Un gestor presenta una Solicitud Tipo con datos incompletos y espacios sin tachar. ¿Qué inconveniente puede generar esta situación en el trámite?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('dat')) c++; // datos
+                if (v.includes('rechaz')) c++; // rechazo
+                if (v.includes('validez')) c++; // validez
+                if (v.includes('observacion')) c++; // observaciones (extra)
+                if (v.includes('formal')) c++; // formales (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en los requisitos formales exigidos.',
+            explanation: 'La falta de datos y espacios sin tachar puede generar observaciones o el rechazo del trámite por incumplir las reglas formales.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Inicio del trámite',
+            title: 'Conductas del gestor',
+            instruction: 'Indicá si las conductas son correctas o incorrectas.',
+            items: [
+                { text: 'Dejar espacios en blanco sin tachar.', color: 'red' },
+                { text: 'Presentar la Solicitud Tipo con todos los datos completos.', color: 'green' },
+                { text: 'Completar el formulario con letra imprenta.', color: 'green' }
+            ],
+            tutor: 'Evaluá qué conductas respetan las reglas formales.',
+            explanation: 'El correcto llenado del formulario evita observaciones y demoras en el trámite.'
+        },
+        {
+            type: 'text',
+            badge: 'Enmiendas',
+            title: 'Error en los datos',
+            instruction: 'Durante el llenado de una Solicitud Tipo se detecta un error en un dato secundario. ¿Cómo debe proceder el peticionante?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('enmiend')) c++; // enmienda
+                if (v.includes('observacion')) c++; // observaciones
+                if (v.includes('rubr')) c++; // rubro (extra)
+                if (v.includes('firm')) c++; // firmada (extra)
+                if (v.includes('validez')) c++; // validez (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en cómo se salva un error.',
+            explanation: 'Debe realizarse la enmienda en el rubro observaciones y ser firmada para conservar la validez del formulario.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Enmiendas',
+            title: 'Procedimiento correcto',
+            instruction: 'Marcá las acciones correctas ante un error en la Solicitud Tipo.',
+            items: [
+                { text: 'Rehacer toda la solicitud sin necesidad', correct: false },
+                { text: 'Salvar el error en observaciones', correct: true },
+                { text: 'Usar corrector líquido', correct: false },
+                { text: 'Firmar la enmienda', correct: true }
+            ],
+            tutor: 'Identificá qué acciones mantienen la validez.',
+            explanation: 'Las enmiendas válidas deben ser visibles y estar firmadas.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes digitales',
+            title: 'Corrección indebida',
+            instruction: 'Un gestor modifica directamente el contenido impreso de una Solicitud Tipo digital. ¿Qué problema se genera?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('invalidez')) c++; // invalidez
+                if (v.includes('hoj')) c++; // hoja
+                if (v.includes('anex')) c++; // anexa
+                if (v.includes('impres')) c++; // impreso (extra)
+                if (v.includes('modific')) c++; // modificar (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en lo que no puede alterarse.',
+            explanation: 'Modificar el formulario digital impreso invalida la solicitud, ya que las correcciones deben realizarse en hoja anexa.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Solicitudes digitales',
+            title: 'Evaluación de prácticas',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'La hoja anexa preserva la integridad del formulario.', color: 'green' },
+                { text: 'Las Solicitudes Tipo digitales pueden corregirse sobre el formulario impreso.', color: 'red' },
+                { text: 'Las aclaraciones deben realizarse en hoja anexa firmada.', color: 'green' }
+            ],
+            tutor: 'Revisá cómo se resguardan los formularios digitales.',
+            explanation: 'El uso de hoja anexa asegura la validez de las Solicitudes Tipo digitales.'
+        },
+        {
+            type: 'text',
+            badge: 'Validez',
+            title: 'Solicitud vencida',
+            instruction: 'Se presenta una Solicitud Tipo firmada hace más de 90 días hábiles. ¿Qué efecto produce esta situación?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('vencimient')) c++; // vencimiento
+                if (v.includes('recarg')) c++; // recargo
+                if (v.includes('vigenc')) c++; // vigencia (extra)
+                if (v.includes('rehac')) c++; // rehacer (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en la vigencia del formulario.',
+            explanation: 'La solicitud pierde vigencia y su presentación genera recargos o la necesidad de rehacer el trámite.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Validez',
+            title: 'Consecuencias del vencimiento',
+            instruction: 'Marcá las consecuencias posibles de presentar una Solicitud Tipo vencida.',
+            items: [
+                { text: 'Uso normal sin consecuencias', correct: false },
+                { text: 'Rechazo del trámite', correct: true },
+                { text: 'Demora en la inscripción', correct: true },
+                { text: 'Aplicación de recargos', correct: true }
+            ],
+            tutor: 'Pensá en efectos administrativos y económicos.',
+            explanation: 'El vencimiento afecta la eficacia del trámite y puede generar costos adicionales.'
+        },
+        {
+            type: 'text',
+            badge: 'Gratuidad',
+            title: 'Evaluación del caso',
+            instruction: 'Un peticionante solicita una Solicitud Tipo gratuita pero no ingresa el trámite en el mismo acto. ¿Corresponde la gratuidad?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('gratu')) c++; // gratuidad
+                if (v.includes('requisit')) c++; // requisitos
+                if (v.includes('no')) c++; // no (extra)
+                if (v.includes('conjunt')) c++; // conjuntamente (extra)
+                if (v.includes('certific')) c++; // certificación (extra)
+                if (v.includes('ingres')) c++; // ingreso (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en condiciones simultáneas.',
+            explanation: 'No corresponde la gratuidad, ya que deben cumplirse conjuntamente la certificación de firma y el ingreso del trámite.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Gratuidad',
+            title: 'Análisis de condiciones',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'La gratuidad se aplica solo si se certifica la firma.', color: 'red' },
+                { text: 'Las Solicitudes Tipo minuta siempre son gratuitas.', color: 'red' },
+                { text: 'La gratuidad requiere certificación de firma e ingreso del trámite.', color: 'green' }
+            ],
+            tutor: 'Verificá cuándo se cumplen todos los requisitos.',
+            explanation: 'La gratuidad solo rige cuando se cumplen todas las condiciones exigidas.'
+        },
+    ],
+
+    // ===================== PRÁCTICA =====================
+    practica: [
+        {
+            type: 'checklist',
+            badge: 'Solicitudes tipo',
+            title: 'Verificación previa',
+            instruction: 'Marcá los controles que debés realizar antes de presentar una Solicitud Tipo.',
+            items: [
+                { text: 'Verificar firmas de las partes', correct: true },
+                { text: 'Revisar la vigencia de la solicitud', correct: true },
+                { text: 'Completar todos los datos requeridos', correct: true },
+                { text: 'Dejar espacios en blanco sin tachar', correct: false }
+            ],
+            tutor: 'Pensá en evitar observaciones del Registro.',
+            explanation: 'La revisión previa reduce rechazos y demoras en el trámite.'
+        },
+        {
+            type: 'text',
+            badge: 'Reglas de completado',
+            title: 'Aplicación práctica',
+            instruction: 'Explicá por qué es importante tachar los espacios no utilizados en una Solicitud Tipo.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('clarid')) c++; // claridad
+                if (v.includes('segurid')) c++; // seguridad
+                if (v.includes('agreg')) c++; // agregados (extra)
+                if (v.includes('indebid')) c++; // indebidos (extra)
+                if (v.includes('evit')) c++; // evitar (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en evitar agregados posteriores.',
+            explanation: 'Tachar los espacios evita agregados indebidos y garantiza claridad y seguridad en la información presentada.'
+        },
+        {
+            type: 'blanks',
+            badge: 'Validez',
+            title: 'Control de vigencia',
+            instruction: 
+                'Completá las frases.<br><br>' +
+                'Antes de presentar una Solicitud Tipo es necesario verificar que no haya superado los __________ días __________ de vigencia.',
+            blanks: ['90', 'habiles'],
+            tutor: 'Pensá en el plazo normativo.',
+            explanation: 'El control de vigencia evita recargos y rechazos del trámite.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Enmiendas',
+            title: 'Prácticas correctas',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'Usar corrector líquido para tapar un error.', color: 'red' },
+                { text: 'Salvar un error en el rubro observaciones y firmarlo.', color: 'green' },
+                { text: 'Permitir que el dato original sea legible.', color: 'green' }
+            ],
+            tutor: 'Evaluá qué prácticas mantienen la validez del formulario.',
+            explanation: 'Las enmiendas válidas deben ser visibles y correctamente salvadas.'
+        },
+        {
+            type: 'text',
+            badge: 'Solicitudes digitales',
+            title: 'Procedimiento correcto',
+            instruction: '¿Cómo deben realizarse las correcciones en una Solicitud Tipo digital?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('hoj')) c++; // hoja
+                if (v.includes('anex')) c++; // anexa
+                if (v.includes('firm')) c++; // firma
+                if (v.includes('modific')) c++; // modificar (extra)
+                if (v.includes('impres')) c++; // impreso (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en preservar el formulario original.',
+            explanation: 'Las correcciones deben realizarse en hoja anexa firmada por las partes, sin modificar el formulario digital impreso.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Gratuidad',
+            title: 'Condiciones necesarias',
+            instruction: 'Marcá las condiciones que deben cumplirse para que una Solicitud Tipo sea gratuita.',
+            items: [
+                { text: 'Firma sin certificación', correct: false },
+                { text: 'Ingreso del trámite en el mismo acto', correct: true },
+                { text: 'Presentación como minuta', correct: false },
+                { text: 'Certificación de firmas ante el encargado', correct: true }
+            ],
+            tutor: 'Identificá requisitos simultáneos.',
+            explanation: 'La gratuidad solo se aplica cuando se cumplen ambas condiciones en forma conjunta.'
+        },
+        {
+            type: 'text',
+            badge: 'Validez',
+            title: 'Gestión del vencimiento',
+            instruction: '¿Qué acción práctica conviene realizar si una Solicitud Tipo está próxima a vencer?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('prevenc')) c++; // prevención
+                if (v.includes('recarg')) c++; // recargo
+                if (v.includes('present')) c++; // presentar (extra)
+                if (v.includes('rehac')) c++; // rehacer (extra)
+                if (v.includes('evit')) c++; // evitar (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en evitar costos adicionales.',
+            explanation: 'Conviene presentar el trámite antes del vencimiento o rehacer la solicitud para evitar recargos y demoras.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Presentación del trámite',
+            title: 'Evaluación operativa',
+            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'El Registro puede actuar sin Solicitud Tipo.', color: 'red' },
+                { text: 'La revisión previa evita rechazos.', color: 'green' },
+                { text: 'Presentar una Solicitud Tipo vencida puede generar recargos.', color: 'green' }
+            ],
+            tutor: 'Pensá en cómo optimizar el trámite.',
+            explanation: 'La correcta gestión previa mejora la eficiencia del trámite registral.'
+        },
+        {
+            type: 'text',
+            badge: 'Procedimiento registral',
+            title: 'Buenas prácticas',
+            instruction: '¿Por qué es importante respetar todas las reglas formales al presentar una Solicitud Tipo?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('eficienc')) c++; // eficiencia
+                if (v.includes('segurid')) c++; // seguridad
+                if (v.includes('evit')) c++; // evita (extra)
+                if (v.includes('observacion')) c++; // observaciones (extra)
+                if (v.includes('garantiz')) c++; // garantiza (extra)
+                if (v.includes('validez')) c++; // validez (extra)
+                return c >= 2;
+            },
+            tutor: 'Pensá en tiempos y validez.',
+            explanation: 'Respetar las reglas formales asegura eficiencia, evita observaciones y garantiza la validez del trámite.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Solicitudes tipo',
+            title: 'Cierre práctico',
+            instruction: 'Marcá las buenas prácticas finales en el uso de Solicitudes Tipo.',
+            items: [
+                { text: 'Ignorar observaciones', correct: false },
+                { text: 'Controlar vigencia', correct: true },
+                { text: 'Usar letra imprenta', correct: true },
+                { text: 'Revisar datos antes de firmar', correct: true }
+            ],
+            tutor: 'Pensá en un trámite prolijo y seguro.',
+            explanation: 'Las buenas prácticas fortalecen la validez y agilizan los trámites registrales.'
+        }
+    ]
+};
+
+        let currentModule = '';
+        let currentIndex = 0;
+        let attemptCount = 0;
+        let lastAudioModule = null;
+
+        // ===== MAPEO DE MÓDULOS A AUDIOS =====
+        const moduloAudioMap = {
+            'sintesis': 'mensaje1',
+            'analisis': 'mensaje2',
+            'escenarios': 'mensaje3',
+            'practica': 'mensaje4'
+        };
+
+        function startModule(id) {
+            playSound('click');
+            currentModule = id;
+            currentIndex = 0;
+            attemptCount = 0;
+            lastAudioModule = id;
+
+            // Reproducir el audio del módulo correspondiente
+            const audioKey = moduloAudioMap[id];
+            if (audioKey) {
+                playAudio(audioKey);
+            }
+
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('activityScreen').classList.add('active');
+
+            setTimeout(loadActivity, 300);
+        }
+
+        function loadActivity() {
+            attemptCount = 0;
+
+            if (currentIndex >= modules[currentModule].length) {
+                // Reproducir "lolograste.mp3" al terminar TODAS las preguntas
+                playAudio('lolograste');
+                playSound('success');
+                alert('¡Excelente! Completaste este bloque.');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+                return;
+            }
+
+            const data = modules[currentModule][currentIndex];
+            const container = document.getElementById('activityContainer');
+
+            const msg = `Pregunta ${currentIndex + 1} de ${modules[currentModule].length}: ${data.tutor}`;
+            document.getElementById('tutorMessage').innerText = msg;
+
+            let html = `<span class="act-badge">${data.badge}</span>
+                        <h2 class="act-title">${data.title}</h2>
+                        <p class="act-instruction">${data.instruction}</p>`;
+
+            if (data.type === 'text') {
+                html += `<textarea id="txtInput" class="student-input" placeholder="Escribe tu respuesta con tus palabras..."></textarea>`;
+            } else if (data.type === 'blanks') {
+                html += `<div style="font-size:1.2rem; line-height:2.5;">`;
+                data.blanks.forEach((b, i) => {
+                    html += `${i + 1}. <input type="text" class="fill-input" data-ans="${b}"> <br>`;
+                });
+                html += `</div>`;
+            } else if (data.type === 'traffic') {
+                data.items.forEach((item, i) => {
+                    html += `<div class="traffic-row" id="row-${i}">
+                                <span>${item.text}</span>
+                                <div style="display:flex; gap:10px;">
+                                    <div class="traffic-btn bg-green" onclick="selTraffic(${i}, 'green')"></div>
+                                    <div class="traffic-btn bg-yellow" onclick="selTraffic(${i}, 'yellow')"></div>
+                                    <div class="traffic-btn bg-red" onclick="selTraffic(${i}, 'red')"></div>
+                                </div>
+                            </div>`;
+                });
+            } else if (data.type === 'checklist') {
+                data.items.forEach((item) => {
+                    html += `<div class="checklist-item" onclick="toggleCheck(this)" data-correct="${item.correct}">
+                                <div class="check-box"></div>
+                                <span>${item.text}</span>
+                            </div>`;
+                });
+            }
+
+            html += `<div id="feedback" class="feedback-area"></div>
+                     <button id="btnCheck" class="btn-action" onclick="validate()">Verificar respuesta</button>
+                     <button class="btn-action btn-back" onclick="location.reload()">Salir al menú</button>`;
+
+            container.innerHTML = html;
+            wireUiSounds();
+        }
+
+        let trafficAns = {};
+
+        function selTraffic(idx, color) {
+            trafficAns[idx] = color;
+            const row = document.getElementById(`row-${idx}`);
+            row.querySelectorAll('.traffic-btn').forEach(b => b.classList.remove('active'));
+            row.querySelector(`.bg-${color}`).classList.add('active');
+            playSound('click');
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            el.querySelector('.check-box').innerText = el.classList.contains('selected') ? '✓' : '';
+
+            if (el.classList.contains('selected')) {
+                el.style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.background = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.color = 'white';
+            } else {
+                el.style.borderColor = 'transparent';
+                el.querySelector('.check-box').style.background = 'transparent';
+                el.querySelector('.check-box').style.borderColor = '#ccc';
+            }
+
+            playSound('click');
+        }
+
+        function validate() {
+            const data = modules[currentModule][currentIndex];
+            const feedback = document.getElementById('feedback');
+            let isCorrect = false;
+
+            if (data.type === 'text') {
+                const val = document.getElementById('txtInput').value;
+                isCorrect = data.validation(val);
+            } else if (data.type === 'blanks') {
+                const inputs = document.querySelectorAll('.fill-input');
+                let hits = 0;
+                inputs.forEach(inp => {
+                    const v = normalizar(inp.value);
+                    const ans = normalizar(inp.dataset.ans);
+                    if (v.length > 1 && ans.startsWith(v.slice(0, Math.max(2, Math.min(v.length, ans.length))))) hits++;
+                });
+                isCorrect = (hits === data.blanks.length);
+            } else if (data.type === 'traffic') {
+                let hits = 0;
+                data.items.forEach((item, i) => { if (trafficAns[i] === item.color) hits++; });
+                isCorrect = (hits === data.items.length);
+            } else if (data.type === 'checklist') {
+                let correct = true;
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    const sel = item.classList.contains('selected');
+                    const should = item.dataset.correct === 'true';
+                    if (sel !== should) correct = false;
+                });
+                isCorrect = correct;
+            }
+
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                playAudio('correcto');
+                playSound('success');
+                feedback.className = 'feedback-area feedback-success';
+                feedback.innerHTML = `<strong>¡Muy bien!</strong><br>${data.explanation}`;
+                document.getElementById('btnCheck').innerText = 'Siguiente pregunta →';
+                document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+            } else {
+                attemptCount++;
+
+                if (attemptCount < 2) {
+                    playAudio('error1');
+                    feedback.className = 'feedback-area feedback-retry';
+                    feedback.innerHTML = `<strong>Buen intento.</strong> Revisá tu respuesta. Pista: ${data.tutor}`;
+                } else {
+                    playAudio('error2');
+                    feedback.className = 'feedback-area feedback-fail';
+                    feedback.innerHTML = `<strong>No pasa nada, aprendamos juntos:</strong><br>${data.explanation}`;
+                    document.getElementById('btnCheck').innerText = 'Entendido, continuar →';
+                    document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+                }
+            }
+        }
+
+        function replayTutorMessage() {
+            // Replay del último audio de módulo reproducido
+            if (lastAudioModule) {
+                const audioKey = moduloAudioMap[lastAudioModule];
+                if (audioKey) {
+                    playAudio(audioKey);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
