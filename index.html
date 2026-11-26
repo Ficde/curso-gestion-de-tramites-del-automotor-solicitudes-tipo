@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espacio de Repaso - FICDE</title>
+    <title>Espacio de Repaso - MOD Solicitudes Tipo</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -363,7 +363,7 @@
                 <img src="logo.png" alt="FICDE" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block'">
                 <h2 id="altLogo" style="display:none; color:white; font-weight:800;">FICDE</h2>
             </div>
-            <div class="module-tag">Módulo Solicitudes Tipo</div>
+            <div class="module-tag">Módulo: Solicitudes Tipo</div>
         </header>
 
         <div id="selectionScreen">
@@ -379,25 +379,25 @@
                 <div class="block-card" onclick="startModule('sintesis')">
                     <div class="block-icon">🧠</div>
                     <div class="block-title">Síntesis</div>
-                    <div class="block-desc">Este bloque aborda los conceptos fundamentales de las Solicitudes Tipo, su función registral, reglas de uso y validez dentro del trámite automotor.</div>
+                    <div class="block-desc">llenado y enmiendas de solicitudes tipo, principio de rogación y unicidad, gratuidad y reposición, plazo de validez de 90 días, peticionarios y apoderados, acreditación de identidad y cambio de radicación.</div>
                 </div>
 
                 <div class="block-card" onclick="startModule('analisis')">
                     <div class="block-icon">🔍</div>
                     <div class="block-title">Análisis Crítico</div>
-                    <div class="block-desc">Este bloque analiza la aplicación normativa de las Solicitudes Tipo, evaluando validez, correcciones, plazos y consecuencias operativas.</div>
+                    <div class="block-desc">enmienda total de datos identificatorios, enajenación de bienes gananciales sin asentimiento, invalidez de poderes especiales vencidos, errores en minutas judiciales y transferencias con medidas cautelares trancadas.</div>
                 </div>
 
                 <div class="block-card" onclick="startModule('escenarios')">
                     <div class="block-icon">🎬</div>
                     <div class="block-title">Escenarios</div>
-                    <div class="block-desc">Este bloque presenta situaciones prácticas vinculadas al uso de Solicitudes Tipo y analiza conductas correctas e incorrectas en contextos reales de trámite.</div>
+                    <div class="block-desc">compra por menor emancipado, oficios Ley 22.172, radicación en Registro receptor, pérdida de folleto 08 y turno en planta CiDi.</div>
                 </div>
 
                 <div class="block-card" onclick="startModule('practica')">
                     <div class="block-icon">⚡</div>
                     <div class="block-title">Práctica</div>
-                    <div class="block-desc">Este bloque propone ejercicios operativos para aplicar correctamente las Solicitudes Tipo en situaciones habituales del trámite registral.</div>
+                    <div class="block-desc">confección de Solicitud Tipo 08-D, subsanación de errores en precarga, verificación física en planta policial, tramitación de minuta judicial y armado de legajos interjurisdiccionales.</div>
                 </div>
             </div>
         </div>
@@ -500,653 +500,547 @@
         }
 
         // ===== ACTIVIDADES: validaciones de texto simplificadas ===
-const modules = {
+// ===== ACTIVIDADES =====
+        const modules = {
+            sintesis: [
+                {
+                    type: 'text',
+                    badge: "Principios procedimentales",
+                    title: "Rogación y unicidad de la petición",
+                    instruction: "Define las reglas de rogación y unicidad que rigen la presentación de las solicitudes tipo.",
+                    tutor: "Considera que cada trámite sobre un vehículo requiere la petición formal de la persona autorizada.",
+                    explanation: "El principio de rogación exige la petición de la persona legitimada respetando la unicidad del trámite.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["rogaci", "unicid", "legiti", "princi", "exige", "petici", "person", "respet", "tramit", "define"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'text',
+                    badge: "Reglas de confección",
+                    title: "Llenado, enmiendas y salvados",
+                    instruction: "Clasifica los requisitos formales de escritura y la forma de salvar errores en formularios papel.",
+                    tutor: "Analiza el uso de máquina o letra clara y el salvado de raspaduras con firma en el rubro respectivo.",
+                    explanation: "Escribir en letra de imprenta exige asentar los salvados firmados en el rubro observaciones.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["impren", "salvad", "observ", "escrib", "letra", "exige", "asenta", "firmad", "rubro", "clasif"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Régimen tarifario",
+                    title: "Gratuidad y reposición de formularios",
+                    instruction: "Selecciona los tres supuestos y condiciones donde procede la entrega o reposición gratuita de solicitudes tipo.",
+                    items: [
+                        { text: "Certificación simultánea de firma ante el Encargado de Registro e ingreso inmediato del trámite", correct: true },
+                        { text: "Entrega sin cargo del ejemplar de la Solicitud Tipo 02-E de manera generalizada", correct: true },
+                        { text: "Reposición de un nuevo ejemplar al presentar una solicitud adquirida previamente si cumple gratuidad", correct: true },
+                        { text: "Venta de solicitudes tipo utilizadas como minuta judicial sin certificación de firma", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca los dos requisitos concurrentes de firma e ingreso, la exención de la ST 02-E y la reposición.",
+                    explanation: "Certificar la firma e ingresar el trámite habilita la gratuidad y la reposición de la solicitud."
+                },
+                {
+                    type: 'text',
+                    badge: "Eficiencia temporal",
+                    title: "Plazo de validez de solicitudes tipo",
+                    instruction: "Detalla la regla general de vencimiento a los 90 días hábiles de la primera certificación de firma.",
+                    tutor: "Observa cómo se computa el plazo desde la certificación inicial y el recargo aplicable al vencer.",
+                    explanation: "La validez de 90 días desde la certificación inicial devenga recargo por mora tras vencer.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["valide", "certif", "mora", "dias", "inicia", "deveng", "recarg", "tras", "vencer", "detall"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Sujetos actuantes",
+                    title: "Capacidad de menores y emancipados",
+                    instruction: "Completar la frase<br><br>Los menores de edad actúan mediante representantes legales, pero los emancipados por matrimonio requieren autorización ________ para disponer de bienes recibidos a título ________ y no pueden hacer __________.",
+                    blanks: ["judicial", "gratuito", "donaciones"],
+                    tutor: "Recuerda los límites de la emancipación matrimonial ante bienes donados o heredados.",
+                    explanation: "Disponer de bienes gratuitos exige autorización judicial prohibiendo realizar donaciones o prestar fianzas."
+                },
+                {
+                    type: 'text',
+                    badge: "Representación mandataria",
+                    title: "Apoderados y plazos de validez",
+                    instruction: "Expone las exigencias de escritura pública para poderes y el plazo registral especial de 90 días hábiles.",
+                    tutor: "Diferencia la regla para poderes especiales sobre dominios específicos de los poderes generales sobre automotores.",
+                    explanation: "La intervención de apoderados requiere escritura pública sujeta a la vigencia de 90 días especiales.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["apoder", "escrit", "vigenc", "interv", "requie", "public", "sujeta", "dias", "especi", "expone"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Documentación personal",
+                    title: "Acreditación de identidad de firmantes",
+                    instruction: "Identifica los tres documentos idóneos para probar la identidad según la nacionalidad y residencia del peticionante.",
+                    items: [
+                        { text: "Documento Nacional de Identidad en tarjeta para ciudadanos argentinos o extranjeros residentes permanentes", correct: true },
+                        { text: "Pasaporte vigente para personas extranjeras sin residencia permanente en el territorio nacional", correct: true },
+                        { text: "Documento o cédula de identidad del país de origen para ciudadanos de países limítrofes", correct: true },
+                        { text: "Constancia simple de Documento Nacional de Identidad en trámite emitida por el registro civil", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Agrupa el DNI en tarjeta, el pasaporte de extranjeros y las cédulas de países limítrofes.",
+                    explanation: "Exhibir el DNI en tarjeta, el pasaporte o la cédula limítrofe valida la identidad."
+                },
+                {
+                    type: 'text',
+                    badge: "Jurisdicción registral",
+                    title: "Competencia en cambio de radicación",
+                    instruction: "Describe las causales que justifican el cambio de radicación y la autoridad registral competente.",
+                    tutor: "Contempla el cambio por domicilio, guarda habitual o transferencia solicitada ante el Registro de destino.",
+                    explanation: "La nueva radicación se fundamenta en el domicilio o guarda tras registrar la transferencia.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["radica", "domici", "transf", "nueva", "fundam", "guarda", "tras", "regist", "descri", "causal"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Circuito interjurisdiccional",
+                    title: "Transferencia del dominio en sistema ACE",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "El cambio de radicación se perfecciona al aceptar el certificado dominial electrónico en sistema ACE", color: "green" },
+                        { text: "El Registro de origen mantiene competencia para recibir trámites tras confirmar el envío por ACE", color: "red" },
+                        { text: "El legajo físico se remite dentro de las 48 horas hábiles tras la aceptación del Registro receptor", color: "green" },
+                        { text: "Existiendo una medida cautelar es posible cambiar la radicación sin necesidad de oficio judicial", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Repasa los momentos de cese de competencia y el envío electrónico por sistema ACE.",
+                    explanation: "La aceptación por ACE perfecciona el cambio de radicación disponiendo el envío del legajo."
+                },
+                {
+                    type: 'text',
+                    badge: "Control físico policial",
+                    title: "Alcance de la verificación vehicular",
+                    instruction: "Sintetiza la obligatoriedad de la verificación física y el plazo de validez del Formulario 12 de 150 días.",
+                    tutor: "Aborda la inspección de números de motor y chasis realizada por peritos policiales autorizados.",
+                    explanation: "La verificación efectuada en plantas policiales mantiene su vigencia por 150 días hábiles.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["verifi", "planta", "vigenc", "efectu", "polici", "mantie", "dias", "habile", "sintet", "obliga"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                }
+            ],
+            analisis: [
+                {
+                    type: 'text',
+                    badge: "Insubsanabilidad documental",
+                    title: "Enmiendas totales en nombre o dominio",
+                    instruction: "Examina las causas por las cuales el Registro no da curso a formularios con enmienda total de partes o dominio.",
+                    tutor: "Analiza la prohibición de alterar totalmente la identidad del comprador, vendedor o número de patente.",
+                    explanation: "La enmienda total del nombre constituye un vicio insubsanable que exige la observación del trámite.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["enmien", "insubs", "observ", "total", "nombre", "consti", "vicio", "exige", "tramit", "examin"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'text',
+                    badge: "Vicios de disposición",
+                    title: "Venta de bien ganancial sin asentimiento",
+                    instruction: "Evalúa las consecuencias jurídicas de pretender transferir un automotor ganancial sin la firma del cónyuge.",
+                    tutor: "Reflexiona sobre la protección del patrimonio conyugal establecida en el artículo 470 del CCyCN.",
+                    explanation: "Enajenar un bien ganancial omitiendo el asentimiento exigido provoca la invalidez del acto.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["gananc", "asenti", "invali", "enajen", "bien", "omitie", "exigid", "provoc", "acto", "evalua"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Fallas de representación",
+                    title: "Vencimiento y defectos en poderes",
+                    instruction: "Distingue las tres causas de rechazo registral al presentar un trámite mediante apoderado con poder especial.",
+                    items: [
+                        { text: "Transcurso de más de 90 días hábiles administrativos desde el otorgamiento del poder especial", correct: true },
+                        { text: "Falta de facultades expresas para disponer o transferir el dominio del automotor individualizado", correct: true },
+                        { text: "Omisión de la constancia de vigencia del plazo por el certificante de la firma en el formulario", correct: true },
+                        { text: "Presentación de un poder general amplio que comprende todo el género automotor de la empresa", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca el vencimiento del plazo de 90 días, la falta de facultad expresa y la omisión de constancia.",
+                    explanation: "El vencimiento de días, la falta de facultades y la falta de constancia anulan la representación."
+                },
+                {
+                    type: 'text',
+                    badge: "Defectos en minutas",
+                    title: "Errores en Solicitud Tipo como minuta judicial",
+                    instruction: "Cuestiona los problemas que surgen al presentar un oficio judicial con discordancias respecto a la minuta.",
+                    tutor: "Observa el requisito de estricta coincidencia entre el texto del mandato del juez y los datos del formulario.",
+                    explanation: "Cualquier discordancia entre el oficio judicial y la minuta frena la registración.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["oficio", "minuta", "discor", "cualqu", "judici", "frena", "regist", "cuesti", "proble", "surgen"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Trabas a la radicación",
+                    title: "Impedimentos por medidas cautelares",
+                    instruction: "Completar la frase<br><br>El embargo sobre el vehículo no impide el cambio de radicación pero resulta ________ en la nueva seccional, requiriéndose la orden del _____ para desafectar el bien si posee régimen ________.",
+                    blanks: ["oponible", "juez", "aduanero"],
+                    tutor: "Recuerda el carácter oponible de la inhibición y la exigencia de desafectación aduanera.",
+                    explanation: "La medida resulta oponible en el nuevo registro exigiendo orden del juez si rige régimen aduanero."
+                },
+                {
+                    type: 'text',
+                    badge: "Vicios de identidad",
+                    title: "Uso impropio de constancias en trámite",
+                    instruction: "Señala la invalidez de pretender certificar firmas o iniciar trámites exhibiendo el comprobante de DNI en trámite.",
+                    tutor: "Considera la regla taxativa que excluye a los papeles en trámite como documento identificatorio válido.",
+                    explanation: "Presentar una constancia de documento en trámite no es idóneo y genera el rechazo.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["consta", "idoneo", "rechaz", "presen", "docume", "tramit", "genera", "senala", "invali", "preten"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Infracciones de desarmado",
+                    title: "Omitir la baja antes del desguace",
+                    instruction: "Reconoce las tres sanciones y consecuencias al desarmar un vehículo sin obtener la baja por desarme RUDAC.",
+                    items: [
+                        { text: "Incurrimiento en infracción a la Ley 25.761 de desarmaderos con decomiso de autopartes", correct: true },
+                        { text: "Imposibilidad de comercializar legalmente los repuestos recuperados por falta de obleas", correct: true },
+                        { text: "Mantenimiento de la responsabilidad fiscal de patentes a nombre del titular registral", correct: true },
+                        { text: "Exención automática del pago de impuestos por la sola destrucción física de la unidad", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Identifica las sanciones penales, la falta de obleas trazables y las deudas impositivas.",
+                    explanation: "Violar la infracción legal impide vender repuestos con obleas manteniendo la carga fiscal."
+                },
+                {
+                    type: 'text',
+                    badge: "Errores de certificación",
+                    title: "Certificantes fuera de su jurisdicción",
+                    instruction: "Analiza las consecuencias de presentar solicitudes firmadas ante certificantes que actuaron fuera de su límite.",
+                    tutor: "Aborda los límites de la competencia de los encargados, escribanos o jueces de paz según su jurisdicción.",
+                    explanation: "La actuación del certificante fuera de su límite territorial provoca la invalidez de la firma.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["certif", "territ", "invali", "actuac", "fuera", "limite", "provoc", "firma", "analiz", "consec"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Irregularidades de sociedades",
+                    title: "Falta de personería en Sección IV",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Las sociedades de la Sección IV inscriben bienes acreditando personería por escritura o instrumento privado", color: "green" },
+                        { text: "El automotor adquirido por una sociedad de hecho se inscribe a nombre individual del presidente", color: "red" },
+                        { text: "El Registro debe asentar la proporción de participación de los socios en la titularidad del bien", color: "green" },
+                        { text: "La representación de la sociedad de hecho no requiere el reconocimiento de los socios", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Analiza los requisitos de acreditación de personería y cuotas partes en sociedades informales.",
+                    explanation: "Acreditar la personería de la sociedad asienta la titularidad proporcional de los socios."
+                },
+                {
+                    type: 'text',
+                    badge: "Omisión de verificación",
+                    title: "Consecuencias de omitir el Formulario 12",
+                    instruction: "Juzga la improcedencia de ingresar la transferencia de un auto usado sin la verificación física cuando es obligatoria.",
+                    tutor: "Reflexiona sobre las fechas de patentamiento que exigen el peritaje en planta como recaudo previo.",
+                    explanation: "Omitir la verificación en modelos obligatorios genera la observación y paralización del expediente.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["verifi", "observ", "parali", "omitir", "modelo", "obliga", "genera", "expedi", "juzga", "improc"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                }
+            ],
+            escenarios: [
+                {
+                    type: 'text',
+                    badge: "Negociación con emancipados",
+                    title: "Venta de vehículo recibido por donación",
+                    instruction: "Resuelve la conducta del gestor cuando un menor emancipado desea vender un automotor heredado.",
+                    tutor: "Orienta la solicitud de autorización ante el juez probando la ventaja evidente o necesidad de la venta.",
+                    explanation: "La venta por el emancipado requiere autorización judicial demostrando la ventaja del acto.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["emanci", "judici", "ventaj", "venta", "requie", "autori", "demost", "acto", "resuel", "conduc"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Mandato de otra provincia",
+                    title: "Oficio judicial en marco de la Ley 22.172",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Los oficios interjurisdiccionales bajo Ley 22.172 requieren la firma del juez y secretario de origen", color: "green" },
+                        { text: "El abogado autorizado en el oficio no puede firmar la Solicitud Tipo como minuta", color: "red" },
+                        { text: "El Registro verifica el sello de legalización o la validación por el canal electrónico oficial", color: "green" },
+                        { text: "La minuta judicial exige obligatoriamente la certificación de firma por escribano público", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Confirma los recaudos de legalización, firma de autorizado y dispensa de certificación en minutas.",
+                    explanation: "Tramitar por Ley 22.172 valida el oficio autorizando al abogado a firmar la minuta."
+                },
+                {
+                    type: 'text',
+                    badge: "Cambio presencial",
+                    title: "Petición de radicación en Registro receptor",
+                    instruction: "Precisa los pasos para tramitar el cambio de radicación ingresando la solicitud directamente en la nueva seccional.",
+                    tutor: "Contempla la presentación simultánea de la transferencia con acreditación del nuevo domicilio o guarda.",
+                    explanation: "Solicitar ante el Registro receptor la transferencia activa el pedido electrónico del legajo.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["recept", "transf", "legajo", "solici", "ante", "regist", "activa", "pedido", "electr", "precis"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Extravío de documentación",
+                    title: "Pérdida del Folleto B de la Solicitud Tipo 08",
+                    instruction: "Puntualiza las tres acciones para continuar la transferencia tras perder un juego del formulario 08 papel.",
+                    items: [
+                        { text: "Presentación del ejemplar que conserve en su poder ante el Registro para la evaluación técnica", correct: true },
+                        { text: "Declaración del número de formulario y folleto extraviado mediante nota con firma certificada", correct: true },
+                        { text: "Verificación física de la unidad para descartar inconsistencias si el Registro lo exige", correct: true },
+                        { text: "Reemplazo automático del formulario firmando una nueva Solicitud Tipo 08 sin presentar la anterior", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Agrupa la exhibición del ejemplar conservado, la nota de extravío y la verificación física.",
+                    explanation: "Exhibir el ejemplar conservado, presentar la nota y verificar la unidad destraba el trámite."
+                },
+                {
+                    type: 'text',
+                    badge: "Gestión de turnos",
+                    title: "Verificación física con turnero CiDi",
+                    instruction: "Orienta al usuario en el proceso de obtención de turno web y presentación en la planta verificadora.",
+                    tutor: "Explica el uso de Ciudadano Digital, la gratuidad del turno y el pago de la tasa de servicio.",
+                    explanation: "Solicitar turno en el turnero de la plataforma permite verificar abonando el comprobante.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["turner", "plataf", "compro", "solici", "turno", "permit", "verifi", "abonan", "orient", "usuari"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Venta por representante",
+                    title: "Compraventa realizada por apoderado",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "El apoderado con poder especial firmado hace 30 días puede suscribir la Solicitud Tipo 08", color: "green" },
+                        { text: "La firma del apoderado en la solicitud no requiere ser certificada por autoridad competente", color: "red" },
+                        { text: "El certificante debe dejar constancia del instrumento de personería y de su vigencia", color: "green" },
+                        { text: "El fallecimiento del poderante antes de la firma no afecta la validez de la actuación del apoderado", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Repasa los controles de vigencia del poder, certificación de firma y vigencia del mandato.",
+                    explanation: "Verificar el poder dentro del plazo y certificar la firma del apoderado aprueba la venta."
+                },
+                {
+                    type: 'text',
+                    badge: "Exención familiar",
+                    title: "Transferencia entre parientes cercanos",
+                    instruction: "Prioriza el criterio para eximir de verificación física a una transferencia entre padre e hijo.",
+                    tutor: "Analiza la exención para familiares hasta el cuarto grado de consanguinidad acreditando el vínculo.",
+                    explanation: "Acreditar el parentesco dentro del grado de consanguinidad otorga la exención de verificar.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["consan", "exenci", "parent", "acredi", "dentro", "grado", "otorga", "verifi", "priori", "criter"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Control de sociedades",
+                    title: "Adquisición por sociedad de la Sección IV",
+                    instruction: "Determina los tres requisitos para inscribir un automotor a nombre de una sociedad no constituida regularmente.",
+                    items: [
+                        { text: "Acompañamiento del contrato social o reconocimiento de socios en escritura pública o privada certificada", correct: true },
+                        { text: "Inclusión de la proporción de participación correspondiente a cada uno de los integrantes de la entidad", correct: true },
+                        { text: "Firmas certificadas de los socios o del representante designado en la Solicitud Tipo 01 o 08", correct: true },
+                        { text: "Presentación de la inscripción en la Inspección General de Justicia como tipo societario regular", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Busca el reconocimiento de socios, las proporciones de titularidad y las firmas certificadas.",
+                    explanation: "Adjuntar el reconocimiento, detallar las proporciones y certificar firmas aprueba el alta."
+                },
+                {
+                    type: 'text',
+                    badge: "Asentamiento por poder",
+                    title: "Firma del asentimiento conyugal por apoderado",
+                    instruction: "Dicta los recaudos cuando el asentimiento de la esposa es otorgado a través de un apoderado.",
+                    tutor: "Abarca la necesidad de poder especial con facultades expresas e individualización clara del vehículo.",
+                    explanation: "Prestar el asentimiento por apoderado exige poder especial con individualización del bien.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["asenti", "especi", "indivi", "presta", "apoder", "exige", "poder", "bien", "dicta", "recaud"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Trámite por condominio",
+                    title: "Petición de cambio de radicación por condóminos",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Los condóminos que suman más del 50% de la propiedad pueden pedir el cambio de radicación", color: "green" },
+                        { text: "Se requiere unanimidad absoluta de todos los condóminos sin importar sus porcentajes", color: "red" },
+                        { text: "Cada condómino suscribe un juego de Solicitud Tipo con la leyenda Continuación", color: "green" },
+                        { text: "La petición por condominio elimina la obligación de presentar el Título del Automotor", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Considera las reglas de mayoría de más del 50% de titularidad y uso de formularios de continuación.",
+                    explanation: "Reunir la mayoría de titularidad autoriza la radicación firmando formularios de continuación."
+                }
+            ],
+            practica: [
+                {
+                    type: 'checklist',
+                    badge: "Procedimientos digitales",
+                    title: "Confección de Solicitud Tipo 08-D",
+                    instruction: "Coordina los tres pasos prácticos para realizar la precarga electrónica de la transferencia en el sitio web.",
+                    items: [
+                        { text: "Carga de los datos de comprador", correct: true },
+                        { text: "vendedor y vehículo en la plataforma oficial de la DNRPA", correct: true },
+                        { text: "Validación de la información y obtención del número de precarga junto con la cita o turno presencial", correct: true },
+                        { text: "Certificación de firmas de las partes en el Registro Seccional al concurrir a ratificar la solicitud", correct: true },
+                        { text: "Impresión del formulario digital en papel común sin concurrir a la sede registral", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Selecciona la carga web, el número de precarga con turno y la certificación presencial.",
+                    explanation: "Realizar la carga en la plataforma, obtener la precarga y certificar en el Registro concluye la 08-D."
+                },
+                {
+                    type: 'text',
+                    badge: "Corrección de precarga",
+                    title: "Subsanación de errores en formularios digitales",
+                    instruction: "Instruye el procedimiento para rectificar datos erróneos ingresados en una Solicitud Tipo 01-D u 08-D.",
+                    tutor: "Detalla el control antes de la firma y la aplicación de procedimientos de rectificación autorizados.",
+                    explanation: "La comprobación de datos en la precarga permite la rectificación antes de la firma.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["rectif", "precar", "compro", "datos", "permit", "antes", "firma", "instru", "proced", "errone"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'blanks',
+                    anyOrder: false,
+                    badge: "Práctica de inspección",
+                    title: "Ejecución del peritaje en planta",
+                    instruction: "Completar la frase<br><br>En la planta verificadora el perito constata el grabado de _____ y ______, estampa su firma y sello en el Formulario _____, entregando la oblea al ___________.",
+                    blanks: ["motor", "chasis", "12", "presentante"],
+                    tutor: "Recuerda los componentes verificados, el número del formulario de constatación y el receptor.",
+                    explanation: "Verificar motor y chasis suscribe el Formulario 12 entregando la constancia al presentante."
+                },
+                {
+                    type: 'traffic',
+                    badge: "Diligenciamiento judicial",
+                    title: "Presentación de oficio y minuta",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "El profesional autorizado por el juez puede firmar la Solicitud Tipo como minuta", color: "green" },
+                        { text: "La firma del autorizado en la minuta debe ser certificada por escribano de registro", color: "red" },
+                        { text: "El Registro verifica que el texto de la minuta coincida exactamente con la orden judicial", color: "green" },
+                        { text: "La minuta judicial puede presentarse sin acompañar el oficio o testimonio original", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Repasa la dispensa de certificación en minutas firmadas por autorizados judiciales.",
+                    explanation: "Suscribir la minuta judicial sin certificación exige acompañar el oficio firmado por el juez."
+                },
+                {
+                    type: 'text',
+                    badge: "Gestión de legajo",
+                    title: "Procedimiento de envío de legajo físico",
+                    instruction: "Prescribe la secuencia operativa para despachar el legajo físico tras aceptar el cambio de radicación.",
+                    tutor: "Abarca el plazo de 48 horas hábiles contadas desde la notificación de aceptación en sistema ACE.",
+                    explanation: "La aceptación en el sistema ordena el despacho del legajo físico en 48 horas.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["legajo", "despac", "acepta", "sistem", "ordena", "fisico", "horas", "prescr", "secuen", "operat"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Recaudos de certificación",
+                    title: "Formalidades en la certificación notarial",
+                    instruction: "Compila los tres requisitos prácticos que debe volcar el escribano en la foja de certificación de firma.",
+                    items: [
+                        { text: "Identificación de los comparecientes por DNI o afirmación de conocimiento conforme al artículo 306 del CCyCN", correct: true },
+                        { text: "Constancia expresa del carácter de la representación y facultades si actúa en nombre de un tercero", correct: true },
+                        { text: "Individualización del instrumento de personería y declaración de vigencia del plazo de 90 días si aplica", correct: true },
+                        { text: "Inclusión del pago del impuesto a las ganancias sobre la venta del automotor en la certificación", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Selecciona la identificación del firmante, las facultades de representación y la vigencia del poder.",
+                    explanation: "Volcar la identificación, comprobar la representación y validar la vigencia formaliza la certificación."
+                },
+                {
+                    type: 'text',
+                    badge: "Trámites en mostrador",
+                    title: "Recepción e ingreso de trámites gratuitos",
+                    instruction: "Guía la actuación del funcionario de caja al certificar firmas y dar ingreso inmediato a una Solicitud Tipo.",
+                    tutor: "Ordena la verificación simultánea de firmas en un solo acto y el cobro exclusivo de aranceles de trámite.",
+                    explanation: "La recepción con certificación simultánea de firmas aplica la gratitud del formulario.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["recepc", "certif", "gratit", "simult", "firmas", "aplica", "formul", "guia", "actuac", "funcio"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'traffic',
+                    badge: "Verificación de identidad",
+                    title: "Carga de datos de documentos extranjeros",
+                    instruction: "Marca afirmaciones correctas",
+                    items: [
+                        { text: "Los ciudadanos de países limítrofes pueden acreditar identidad con la cédula de su país de origen", color: "green" },
+                        { text: "La constancia de documento en trámite es válida para inscribir si está firmada por el registro civil", color: "red" },
+                        { text: "Los extranjeros con residencia permanente deben presentar el DNI argentino formato tarjeta", color: "green" },
+                        { text: "Los diplomáticos extranjeros acreditan identidad únicamente con la cédula de conducir local", color: "red" }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Considera los tipos de documentos de identidad exigibles a extranjeros residentes y no residentes.",
+                    explanation: "Controlar la cédula limítrofe o el DNI de residentes rechaza comprobantes de documento en trámite."
+                },
+                {
+                    type: 'text',
+                    badge: "Asentamiento de salvados",
+                    title: "Técnica de salvado de errores en el rubro E",
+                    instruction: "Desglosa la forma de subsanar un error de tipeo en el domicilio completado en el formulario papel.",
+                    tutor: "Enseña a redactar la corrección en el rubro \"Observaciones\" y colocar la firma del declarante al pie del cuadro.",
+                    explanation: "La subsanación en el cuadro de observaciones requiere la firma de la parte interesada.",
+                    validation: (raw) => {
+                        const v = normalizar(raw);
+                        const roots = ["subsan", "observ", "firma", "cuadro", "requie", "parte", "intere", "desglo", "forma", "error"];
+                        return roots.filter(r => v.includes(r)).length >= 2;
+                    }
+                },
+                {
+                    type: 'checklist',
+                    badge: "Cierre del expediente",
+                    title: "Cierre y despacho de cambio de radicación",
+                    instruction: "Reúne las tres acciones finales para concluir la tramitación del cambio de radicación en el Registro receptor.",
+                    items: [
+                        { text: "Incorporación del dominio al inventario electrónico del Registro Seccional de destino vía ACE", correct: true },
+                        { text: "Expedición del Título Digital actualizado y de la nueva Cédula de Identificación del automotor", correct: true },
+                        { text: "Notificación al usuario para el retiro de las constancias definitivas en la sede registral", correct: true },
+                        { text: "Destrucción inmediata del legajo físico anterior sin archivar los antecedentes", correct: false }
+                    ].sort(() => Math.random() - 0.5),
+                    tutor: "Agrupa la alta en inventario ACE, la emisión de título y cédula, y la notificación al usuario.",
+                    explanation: "Confirmar la incorporación en ACE, expedir la nueva cédula y enviar la notificación cierra la radicación."
+                }
+            ]
+        };
 
-    // ===================== SÍNTESIS =====================
-    sintesis: [
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Función en el trámite registral',
-            instruction: 'Explicá cuál es la función de las Solicitudes Tipo dentro del sistema registral del automotor.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('solicit')) c++; // solicitud
-                if (v.includes('tramit')) c++; // trámite
-                if (v.includes('registr')) c++; // registro
-                if (v.includes('instrument')) c++; // instrumento (extra)
-                if (v.includes('formal')) c++; // formal (extra)
-                if (v.includes('inscripc')) c++; // inscripción (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en cómo se inicia formalmente un trámite ante el Registro.',
-            explanation: 'Las Solicitudes Tipo son el instrumento formal mediante el cual se solicita la inscripción o modificación de datos ante el Registro del Automotor, dando inicio al trámite registral.'
-        },
-        {
-            type: 'text',
-            badge: 'Principios registrales',
-            title: 'Principio de rogación',
-            instruction: '¿En qué consiste el principio de rogación aplicado al régimen del automotor?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('rogacion')) c++; // rogación
-                if (v.includes('peticion')) c++; // petición
-                if (v.includes('actuacion')) c++; // actuación
-                if (v.includes('pedid')) c++; // pedido (extra)
-                if (v.includes('interes')) c++; // interesada (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en quién impulsa la actuación del Registro.',
-            explanation: 'El principio de rogación establece que el Registro solo actúa a pedido de la parte interesada o de la autoridad competente, mediante la presentación de una Solicitud Tipo.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Solicitudes tipo',
-            title: 'Características generales',
-            instruction: 'Marcá las características propias de las Solicitudes Tipo.',
-            items: [
-                { text: 'Documento informal sin valor legal', correct: false },
-                { text: 'Instrumento obligatorio para trámites registrales', correct: true },
-                { text: 'Puede completarse de cualquier manera', correct: false },
-                { text: 'Tiene carácter de declaración jurada', correct: true }
-            ],
-            tutor: 'Identificá qué rasgos le otorgan validez legal.',
-            explanation: 'Las Solicitudes Tipo son obligatorias y tienen valor legal porque los datos consignados constituyen una declaración jurada.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Carácter de declaración jurada',
-            instruction: '¿Qué implica que los datos consignados en una Solicitud Tipo tengan carácter de declaración jurada?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('responsabil')) c++; // responsabilidad
-                if (v.includes('veracid')) c++; // veracidad
-                if (v.includes('legal')) c++; // legal (extra)
-                if (v.includes('asum')) c++; // asume (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en las consecuencias legales de la información brindada.',
-            explanation: 'El carácter de declaración jurada implica que quien firma la solicitud asume responsabilidad legal por la veracidad de los datos consignados.'
-        },
-        {
-            type: 'blanks',
-            badge: 'Reglas de uso',
-            title: 'Principio de unicidad',
-            instruction: 
-                'Completá la frase.<br><br>' +
-                'El principio de unicidad de la rogación establece que debe utilizarse una Solicitud Tipo por cada __________ y por cada __________.',
-            blanks: ['automotor', 'tramite'],
-            tutor: 'Pensá en cantidad de vehículos y gestiones.',
-            explanation: 'El principio de unicidad busca individualizar cada trámite y cada automotor mediante una Solicitud Tipo específica.'
-        },
-        {
-            type: 'text',
-            badge: 'Reglas de completado',
-            title: 'Forma de llenado',
-            instruction: 'Explicá cómo deben completarse correctamente las Solicitudes Tipo.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('imprent')) c++; // imprenta
-                if (v.includes('tint')) c++; // tinta
-                if (v.includes('maquin')) c++; // máquina (extra)
-                if (v.includes('negr')) c++; // negra (extra)
-                if (v.includes('azul')) c++; // azul (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en prolijidad y legibilidad.',
-            explanation: 'Las Solicitudes Tipo deben completarse a máquina o con letra imprenta, en tinta negra o azul, cubriendo todos los datos requeridos.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Reglas de completado',
-            title: 'Errores frecuentes',
-            instruction: 'Marcá prácticas incorrectas al completar una Solicitud Tipo.',
-            items: [
-                { text: 'Completar con letra imprenta', correct: false },
-                { text: 'Usar corrector líquido', correct: true },
-                { text: 'Tachar espacios no utilizados', correct: false },
-                { text: 'Omitir datos requeridos', correct: true }
-            ],
-            tutor: 'Pensá qué acciones afectan la validez del formulario.',
-            explanation: 'El uso de corrector y la omisión de datos afectan la validez de la Solicitud Tipo.'
-        },
-        {
-            type: 'text',
-            badge: 'Enmiendas',
-            title: 'Correcciones permitidas',
-            instruction: '¿Cuándo es válida una enmienda en una Solicitud Tipo?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('enmiend')) c++; // enmienda
-                if (v.includes('observacion')) c++; // observaciones
-                if (v.includes('salv')) c++; // salva, salvar (extra)
-                if (v.includes('firm')) c++; // firma, firmada (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en cómo se salva un error.',
-            explanation: 'Una enmienda es válida cuando el error se salva en el rubro observaciones y es firmada por quien corresponda.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Solicitudes tipo',
-            title: 'Validez de datos',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'Los datos consignados en la Solicitud Tipo carecen de valor legal.', color: 'red' },
-                { text: 'Puede usarse una misma Solicitud Tipo para varios automotores.', color: 'red' },
-                { text: 'Las Solicitudes Tipo son obligatorias para iniciar trámites registrales.', color: 'green' }
-            ],
-            tutor: 'Evaluá qué afirmaciones coinciden con los principios registrales.',
-            explanation: 'Las Solicitudes Tipo son obligatorias, tienen valor legal y se utilizan de forma individual por trámite y automotor.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Importancia operativa',
-            instruction: 'Explicá por qué las Solicitudes Tipo son fundamentales en el sistema registral automotor.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('control')) c++; // control
-                if (v.includes('formal')) c++; // formalidad
-                if (v.includes('orden')) c++; // orden (extra)
-                if (v.includes('segurid')) c++; // seguridad (extra)
-                if (v.includes('juridic')) c++; // jurídica (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en orden y seguridad jurídica.',
-            explanation: 'Las Solicitudes Tipo permiten ordenar, controlar y formalizar los trámites, garantizando seguridad jurídica en el registro automotor.'
-        },
-    ],
-
-    // ===================== ANÁLISIS CRÍTICO =====================
-    analisis: [
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Alcance normativo',
-            instruction: 'Analizá por qué el uso de Solicitudes Tipo es obligatorio en los trámites registrales del automotor.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('obligatori')) c++; // obligatoriedad
-                if (v.includes('normativ')) c++; // normativa
-                if (v.includes('registr')) c++; // registro
-                if (v.includes('ajust')) c++; // ajusten (extra)
-                if (v.includes('vigent')) c++; // vigente (extra)
-                if (v.includes('actuar')) c++; // actuar (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en la norma que regula la actuación del Registro.',
-            explanation: 'El uso obligatorio de Solicitudes Tipo asegura que los trámites se ajusten a la normativa vigente y habilita al Registro a actuar válidamente.'
-        },
-        {
-            type: 'text',
-            badge: 'Principios registrales',
-            title: 'Consecuencias del principio de rogación',
-            instruction: '¿Qué sucede si no existe una solicitud expresa para iniciar un trámite registral?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('peticion')) c++; // petición
-                if (v.includes('actuacion')) c++; // actuación
-                if (v.includes('tramit')) c++; // trámite
-                if (v.includes('no')) c++; // no (extra, para 'no puede actuar')
-                if (v.includes('pedid')) c++; // pedido (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en la inactividad del Registro.',
-            explanation: 'Sin una solicitud expresa, el Registro no puede actuar, ya que su intervención depende exclusivamente del pedido formal del interesado o autoridad competente.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Enmiendas',
-            title: 'Impacto en la validez',
-            instruction: 'Marcá las situaciones que invalidan una Solicitud Tipo.',
-            items: [
-                { text: 'Corrección salvada en observaciones', correct: false },
-                { text: 'Enmienda total del nombre de una parte', correct: true },
-                { text: 'Uso de corrector', correct: true },
-                { text: 'Enmienda parcial legible', correct: false }
-            ],
-            tutor: 'Evaluá si el dato original puede verificarse.',
-            explanation: 'Las enmiendas que impiden identificar datos esenciales o eliminan la legibilidad invalidan la Solicitud Tipo.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Correcciones admisibles',
-            instruction: 'Explicá por qué algunas enmiendas están permitidas y otras no.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('identific')) c++; // identificación, identificar
-                if (v.includes('dat')) c++; // datos
-                if (v.includes('esencial')) c++; // esenciales
-                if (v.includes('original')) c++; // original (extra)
-                if (v.includes('afect')) c++; // afectan (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en la posibilidad de verificar la información original.',
-            explanation: 'Las enmiendas se permiten cuando no afectan datos esenciales y permiten identificar claramente la información original consignada.'
-        },
-        {
-            type: 'blanks',
-            badge: 'Validez',
-            title: 'Plazo de vigencia',
-            instruction: 
-                'Completá la frase.<br><br>' +
-                'Las Solicitudes Tipo tienen una vigencia de __________ días __________ administrativos desde su firma o certificación.',
-            blanks: ['90', 'habiles'],
-            tutor: 'Pensá en el plazo establecido por la normativa.',
-            explanation: 'El plazo de vigencia limita temporalmente la eficacia de la Solicitud Tipo.'
-        },
-        {
-            type: 'text',
-            badge: 'Validez',
-            title: 'Mora',
-            instruction: 'Explicá las consecuencias de presentar una Solicitud Tipo fuera del plazo de vigencia.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('recarg')) c++; // recargo
-                if (v.includes('vencimient')) c++; // vencimiento
-                if (v.includes('arancel')) c++; // arancel (extra)
-                if (v.includes('adicional')) c++; // adicional (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en el impacto económico del atraso.',
-            explanation: 'La presentación fuera de plazo genera un recargo adicional sobre el arancel correspondiente, conforme el tiempo de mora transcurrido.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Solicitudes tipo',
-            title: 'Gratuidad',
-            instruction: 'Marcá los requisitos necesarios para la entrega gratuita de una Solicitud Tipo.',
-            items: [
-                { text: 'Ingreso del trámite en el mismo acto', correct: true },
-                { text: 'Firma sin certificación', correct: false },
-                { text: 'Presentación como minuta', correct: false },
-                { text: 'Certificación de firma ante el encargado', correct: true }
-            ],
-            tutor: 'Identificá condiciones que deben cumplirse juntas.',
-            explanation: 'La gratuidad solo se aplica cuando se certifica la firma y se ingresa el trámite en el mismo acto.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes digitales',
-            title: 'Correcciones',
-            instruction: 'Analizá por qué las correcciones en Solicitudes Tipo digitales deben realizarse en hoja anexa.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('inalterabil')) c++; // inalterabilidad
-                if (v.includes('respald')) c++; // respaldo
-                if (v.includes('integrid')) c++; // integridad (extra)
-                if (v.includes('preserv')) c++; // preserva (extra)
-                if (v.includes('alter')) c++; // alterar (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en la integridad del formulario impreso.',
-            explanation: 'La hoja anexa preserva la integridad del formulario digital impreso y permite documentar aclaraciones sin alterar el original.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Validez',
-            title: 'Evaluación normativa',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'Una Solicitud Tipo vencida no puede generar consecuencias económicas.', color: 'red' },
-                { text: 'Las Solicitudes Tipo digitales pueden corregirse directamente sobre el formulario.', color: 'red' },
-                { text: 'La vigencia de la Solicitud Tipo limita temporalmente su eficacia.', color: 'green' }
-            ],
-            tutor: 'Revisá qué establece la normativa sobre plazos y correcciones.',
-            explanation: 'La vigencia y las reglas de corrección determinan la eficacia legal de la Solicitud Tipo.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes tipo',
-            title: 'Riesgos operativos',
-            instruction: 'Explicá qué riesgos se generan al no respetar las reglas de uso de las Solicitudes Tipo.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('rechaz')) c++; // rechazo
-                if (v.includes('demor')) c++; // demora
-                if (v.includes('cost')) c++; // costos (extra)
-                if (v.includes('adicional')) c++; // adicionales (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en el impacto sobre el trámite.',
-            explanation: 'El incumplimiento de las reglas puede provocar rechazos, demoras y costos adicionales en la tramitación registral.'
-        },
-    ],
-
-    // ===================== ESCENARIOS =====================
-    escenarios: [
-        {
-            type: 'text',
-            badge: 'Inicio del trámite',
-            title: 'Presentación incompleta',
-            instruction: 'Un gestor presenta una Solicitud Tipo con datos incompletos y espacios sin tachar. ¿Qué inconveniente puede generar esta situación en el trámite?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('dat')) c++; // datos
-                if (v.includes('rechaz')) c++; // rechazo
-                if (v.includes('validez')) c++; // validez
-                if (v.includes('observacion')) c++; // observaciones (extra)
-                if (v.includes('formal')) c++; // formales (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en los requisitos formales exigidos.',
-            explanation: 'La falta de datos y espacios sin tachar puede generar observaciones o el rechazo del trámite por incumplir las reglas formales.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Inicio del trámite',
-            title: 'Conductas del gestor',
-            instruction: 'Indicá si las conductas son correctas o incorrectas.',
-            items: [
-                { text: 'Dejar espacios en blanco sin tachar.', color: 'red' },
-                { text: 'Presentar la Solicitud Tipo con todos los datos completos.', color: 'green' },
-                { text: 'Completar el formulario con letra imprenta.', color: 'green' }
-            ],
-            tutor: 'Evaluá qué conductas respetan las reglas formales.',
-            explanation: 'El correcto llenado del formulario evita observaciones y demoras en el trámite.'
-        },
-        {
-            type: 'text',
-            badge: 'Enmiendas',
-            title: 'Error en los datos',
-            instruction: 'Durante el llenado de una Solicitud Tipo se detecta un error en un dato secundario. ¿Cómo debe proceder el peticionante?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('enmiend')) c++; // enmienda
-                if (v.includes('observacion')) c++; // observaciones
-                if (v.includes('rubr')) c++; // rubro (extra)
-                if (v.includes('firm')) c++; // firmada (extra)
-                if (v.includes('validez')) c++; // validez (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en cómo se salva un error.',
-            explanation: 'Debe realizarse la enmienda en el rubro observaciones y ser firmada para conservar la validez del formulario.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Enmiendas',
-            title: 'Procedimiento correcto',
-            instruction: 'Marcá las acciones correctas ante un error en la Solicitud Tipo.',
-            items: [
-                { text: 'Rehacer toda la solicitud sin necesidad', correct: false },
-                { text: 'Salvar el error en observaciones', correct: true },
-                { text: 'Usar corrector líquido', correct: false },
-                { text: 'Firmar la enmienda', correct: true }
-            ],
-            tutor: 'Identificá qué acciones mantienen la validez.',
-            explanation: 'Las enmiendas válidas deben ser visibles y estar firmadas.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes digitales',
-            title: 'Corrección indebida',
-            instruction: 'Un gestor modifica directamente el contenido impreso de una Solicitud Tipo digital. ¿Qué problema se genera?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('invalidez')) c++; // invalidez
-                if (v.includes('hoj')) c++; // hoja
-                if (v.includes('anex')) c++; // anexa
-                if (v.includes('impres')) c++; // impreso (extra)
-                if (v.includes('modific')) c++; // modificar (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en lo que no puede alterarse.',
-            explanation: 'Modificar el formulario digital impreso invalida la solicitud, ya que las correcciones deben realizarse en hoja anexa.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Solicitudes digitales',
-            title: 'Evaluación de prácticas',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'La hoja anexa preserva la integridad del formulario.', color: 'green' },
-                { text: 'Las Solicitudes Tipo digitales pueden corregirse sobre el formulario impreso.', color: 'red' },
-                { text: 'Las aclaraciones deben realizarse en hoja anexa firmada.', color: 'green' }
-            ],
-            tutor: 'Revisá cómo se resguardan los formularios digitales.',
-            explanation: 'El uso de hoja anexa asegura la validez de las Solicitudes Tipo digitales.'
-        },
-        {
-            type: 'text',
-            badge: 'Validez',
-            title: 'Solicitud vencida',
-            instruction: 'Se presenta una Solicitud Tipo firmada hace más de 90 días hábiles. ¿Qué efecto produce esta situación?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('vencimient')) c++; // vencimiento
-                if (v.includes('recarg')) c++; // recargo
-                if (v.includes('vigenc')) c++; // vigencia (extra)
-                if (v.includes('rehac')) c++; // rehacer (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en la vigencia del formulario.',
-            explanation: 'La solicitud pierde vigencia y su presentación genera recargos o la necesidad de rehacer el trámite.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Validez',
-            title: 'Consecuencias del vencimiento',
-            instruction: 'Marcá las consecuencias posibles de presentar una Solicitud Tipo vencida.',
-            items: [
-                { text: 'Uso normal sin consecuencias', correct: false },
-                { text: 'Rechazo del trámite', correct: true },
-                { text: 'Demora en la inscripción', correct: true },
-                { text: 'Aplicación de recargos', correct: true }
-            ],
-            tutor: 'Pensá en efectos administrativos y económicos.',
-            explanation: 'El vencimiento afecta la eficacia del trámite y puede generar costos adicionales.'
-        },
-        {
-            type: 'text',
-            badge: 'Gratuidad',
-            title: 'Evaluación del caso',
-            instruction: 'Un peticionante solicita una Solicitud Tipo gratuita pero no ingresa el trámite en el mismo acto. ¿Corresponde la gratuidad?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('gratu')) c++; // gratuidad
-                if (v.includes('requisit')) c++; // requisitos
-                if (v.includes('no')) c++; // no (extra)
-                if (v.includes('conjunt')) c++; // conjuntamente (extra)
-                if (v.includes('certific')) c++; // certificación (extra)
-                if (v.includes('ingres')) c++; // ingreso (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en condiciones simultáneas.',
-            explanation: 'No corresponde la gratuidad, ya que deben cumplirse conjuntamente la certificación de firma y el ingreso del trámite.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Gratuidad',
-            title: 'Análisis de condiciones',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'La gratuidad se aplica solo si se certifica la firma.', color: 'red' },
-                { text: 'Las Solicitudes Tipo minuta siempre son gratuitas.', color: 'red' },
-                { text: 'La gratuidad requiere certificación de firma e ingreso del trámite.', color: 'green' }
-            ],
-            tutor: 'Verificá cuándo se cumplen todos los requisitos.',
-            explanation: 'La gratuidad solo rige cuando se cumplen todas las condiciones exigidas.'
-        },
-    ],
-
-    // ===================== PRÁCTICA =====================
-    practica: [
-        {
-            type: 'checklist',
-            badge: 'Solicitudes tipo',
-            title: 'Verificación previa',
-            instruction: 'Marcá los controles que debés realizar antes de presentar una Solicitud Tipo.',
-            items: [
-                { text: 'Verificar firmas de las partes', correct: true },
-                { text: 'Revisar la vigencia de la solicitud', correct: true },
-                { text: 'Completar todos los datos requeridos', correct: true },
-                { text: 'Dejar espacios en blanco sin tachar', correct: false }
-            ],
-            tutor: 'Pensá en evitar observaciones del Registro.',
-            explanation: 'La revisión previa reduce rechazos y demoras en el trámite.'
-        },
-        {
-            type: 'text',
-            badge: 'Reglas de completado',
-            title: 'Aplicación práctica',
-            instruction: 'Explicá por qué es importante tachar los espacios no utilizados en una Solicitud Tipo.',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('clarid')) c++; // claridad
-                if (v.includes('segurid')) c++; // seguridad
-                if (v.includes('agreg')) c++; // agregados (extra)
-                if (v.includes('indebid')) c++; // indebidos (extra)
-                if (v.includes('evit')) c++; // evitar (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en evitar agregados posteriores.',
-            explanation: 'Tachar los espacios evita agregados indebidos y garantiza claridad y seguridad en la información presentada.'
-        },
-        {
-            type: 'blanks',
-            badge: 'Validez',
-            title: 'Control de vigencia',
-            instruction: 
-                'Completá las frases.<br><br>' +
-                'Antes de presentar una Solicitud Tipo es necesario verificar que no haya superado los __________ días __________ de vigencia.',
-            blanks: ['90', 'habiles'],
-            tutor: 'Pensá en el plazo normativo.',
-            explanation: 'El control de vigencia evita recargos y rechazos del trámite.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Enmiendas',
-            title: 'Prácticas correctas',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'Usar corrector líquido para tapar un error.', color: 'red' },
-                { text: 'Salvar un error en el rubro observaciones y firmarlo.', color: 'green' },
-                { text: 'Permitir que el dato original sea legible.', color: 'green' }
-            ],
-            tutor: 'Evaluá qué prácticas mantienen la validez del formulario.',
-            explanation: 'Las enmiendas válidas deben ser visibles y correctamente salvadas.'
-        },
-        {
-            type: 'text',
-            badge: 'Solicitudes digitales',
-            title: 'Procedimiento correcto',
-            instruction: '¿Cómo deben realizarse las correcciones en una Solicitud Tipo digital?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('hoj')) c++; // hoja
-                if (v.includes('anex')) c++; // anexa
-                if (v.includes('firm')) c++; // firma
-                if (v.includes('modific')) c++; // modificar (extra)
-                if (v.includes('impres')) c++; // impreso (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en preservar el formulario original.',
-            explanation: 'Las correcciones deben realizarse en hoja anexa firmada por las partes, sin modificar el formulario digital impreso.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Gratuidad',
-            title: 'Condiciones necesarias',
-            instruction: 'Marcá las condiciones que deben cumplirse para que una Solicitud Tipo sea gratuita.',
-            items: [
-                { text: 'Firma sin certificación', correct: false },
-                { text: 'Ingreso del trámite en el mismo acto', correct: true },
-                { text: 'Presentación como minuta', correct: false },
-                { text: 'Certificación de firmas ante el encargado', correct: true }
-            ],
-            tutor: 'Identificá requisitos simultáneos.',
-            explanation: 'La gratuidad solo se aplica cuando se cumplen ambas condiciones en forma conjunta.'
-        },
-        {
-            type: 'text',
-            badge: 'Validez',
-            title: 'Gestión del vencimiento',
-            instruction: '¿Qué acción práctica conviene realizar si una Solicitud Tipo está próxima a vencer?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('prevenc')) c++; // prevención
-                if (v.includes('recarg')) c++; // recargo
-                if (v.includes('present')) c++; // presentar (extra)
-                if (v.includes('rehac')) c++; // rehacer (extra)
-                if (v.includes('evit')) c++; // evitar (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en evitar costos adicionales.',
-            explanation: 'Conviene presentar el trámite antes del vencimiento o rehacer la solicitud para evitar recargos y demoras.'
-        },
-        {
-            type: 'traffic',
-            badge: 'Presentación del trámite',
-            title: 'Evaluación operativa',
-            instruction: 'Indicá si las afirmaciones son correctas o incorrectas.',
-            items: [
-                { text: 'El Registro puede actuar sin Solicitud Tipo.', color: 'red' },
-                { text: 'La revisión previa evita rechazos.', color: 'green' },
-                { text: 'Presentar una Solicitud Tipo vencida puede generar recargos.', color: 'green' }
-            ],
-            tutor: 'Pensá en cómo optimizar el trámite.',
-            explanation: 'La correcta gestión previa mejora la eficiencia del trámite registral.'
-        },
-        {
-            type: 'text',
-            badge: 'Procedimiento registral',
-            title: 'Buenas prácticas',
-            instruction: '¿Por qué es importante respetar todas las reglas formales al presentar una Solicitud Tipo?',
-            validation: (raw) => {
-                const v = normalizar(raw);
-                let c = 0;
-                if (v.includes('eficienc')) c++; // eficiencia
-                if (v.includes('segurid')) c++; // seguridad
-                if (v.includes('evit')) c++; // evita (extra)
-                if (v.includes('observacion')) c++; // observaciones (extra)
-                if (v.includes('garantiz')) c++; // garantiza (extra)
-                if (v.includes('validez')) c++; // validez (extra)
-                return c >= 2;
-            },
-            tutor: 'Pensá en tiempos y validez.',
-            explanation: 'Respetar las reglas formales asegura eficiencia, evita observaciones y garantiza la validez del trámite.'
-        },
-        {
-            type: 'checklist',
-            badge: 'Solicitudes tipo',
-            title: 'Cierre práctico',
-            instruction: 'Marcá las buenas prácticas finales en el uso de Solicitudes Tipo.',
-            items: [
-                { text: 'Ignorar observaciones', correct: false },
-                { text: 'Controlar vigencia', correct: true },
-                { text: 'Usar letra imprenta', correct: true },
-                { text: 'Revisar datos antes de firmar', correct: true }
-            ],
-            tutor: 'Pensá en un trámite prolijo y seguro.',
-            explanation: 'Las buenas prácticas fortalecen la validez y agilizan los trámites registrales.'
-        }
-    ]
-};
-
-        let currentModule = '';
+let currentModule = '';
         let currentIndex = 0;
         let attemptCount = 0;
         let lastAudioModule = null;
